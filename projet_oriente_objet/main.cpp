@@ -6,13 +6,9 @@ using namespace std;
 
 int main()
 {
-
-    // -------------------------------------------------
-    // Création de la liste des employés autorisés
-    // On utilise un vector qui contient des objets
-    // de type Employe.
-    // -------------------------------------------------
-
+    // -----------------------------------------
+    // Création de la liste des employés
+    // -----------------------------------------
     vector<Employe> employes =
     {
         Employe("001", "Andrew"),
@@ -22,68 +18,53 @@ int main()
         Employe("005", "Caroline")
     };
 
-
-    // Variable qui va stocker le numéro entré
     string numero;
 
-    // Pointeur vers l'employé connecté
-    // nullptr signifie qu'aucun employé n'est connecté
-    Employe* employeConnecte = nullptr;
+    // index de l'employé trouvé
+    // -1 signifie qu'on n'a trouvé personne
+    int indexEmploye = -1;
 
-
-    // -------------------------------------------------
+    // -----------------------------------------
     // AUTHENTIFICATION
-    // -------------------------------------------------
-    // On répète tant que l'utilisateur n'entre pas
-    // un numéro valide.
-    // -------------------------------------------------
+    // -----------------------------------------
+    // On continue tant qu'on ne trouve pas
+    // un numéro valide
+    // -----------------------------------------
 
-    while (employeConnecte == nullptr)
+    while (indexEmploye == -1)
     {
-
         cout << "Veuillez vous identifier: ";
         cin >> numero;
 
-
-        // Recherche dans la liste des employés
+        // On parcourt la liste des employés
         for (int i = 0; i < employes.size(); i++)
         {
-
-            // On utilise l'opérateur == que nous avons créé
+            // Utilisation de l'opérateur ==
             if (employes[i] == numero)
             {
-                // Si l'employé est trouvé,
-                // on sauvegarde son adresse
-                employeConnecte = &employes[i];
-
+                indexEmploye = i;
                 break;
             }
         }
 
-        // Si aucun employé n'est trouvé
-        if (employeConnecte == nullptr)
+        // Si aucun employé trouvé
+        if (indexEmploye == -1)
         {
             cout << "ERREUR: Numero d'employe invalide" << endl;
         }
     }
 
-
     // Message de bienvenue
-    cout << "Bonjour, " << employeConnecte->getNom() << endl;
-
+    cout << "Bonjour, " << employes[indexEmploye].getNom() << endl;
 
     int choix;
 
-    // -------------------------------------------------
+    // -----------------------------------------
     // MENU PRINCIPAL
-    // -------------------------------------------------
-    // Cette boucle affiche le menu jusqu'à ce que
-    // l'utilisateur choisisse l'option 0 (payer).
-    // -------------------------------------------------
+    // -----------------------------------------
 
     do
     {
-
         cout << endl;
         cout << "********************" << endl;
         cout << " MENU PRINCIPAL " << endl;
@@ -97,11 +78,8 @@ int main()
         cout << "Votre choix: ";
         cin >> choix;
 
-
-        // Gestion du choix avec switch
         switch (choix)
         {
-
         case 1:
             cout << "AJOUT ARTICLE" << endl;
             break;
@@ -120,11 +98,9 @@ int main()
 
         default:
             cout << "Choix invalide..." << endl;
-
         }
 
     } while (choix != 0);
-
 
     return 0;
 }

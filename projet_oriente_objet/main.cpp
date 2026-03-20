@@ -1,13 +1,61 @@
 #include <iostream>
 #include <vector>
+#include <limits>
 #include "Employe.h"
 
 using namespace std;
 
+// ---------------------------------------------------------
+// Fonction LireSaisie
+// Permet de lire une saisie utilisateur proprement
+// en gérant les erreurs de type (cin.fail())
+// ---------------------------------------------------------
+string LireSaisie(const string& invite)
+{
+    string saisie;
+    cout << invite;
+    cin >> saisie;
+
+    // Gestion des erreurs de saisie: si l'utilisateur entre un type incorrect
+    if (cin.fail())
+    {
+        cin.clear(); // Réinitialise l'état de cin
+        cin.ignore(numeric_limits<streamsize>::max(), '\n'); // Vide le buffer
+    }
+
+    return saisie;
+}
+
+// ---------------------------------------------------------
+// Fonction Login
+// Vérifie si le code entré correspond à un employé existant
+// Retourne le nom de l'employé si trouvé
+// ---------------------------------------------------------
+string Login(const string employes[][2], int nombreEmployes)
+{
+    while (true)
+    {
+        string code = LireSaisie("Veuillez vous identifier: ");
+
+        // On parcourt la liste des employés
+        for (int i = 0; i < nombreEmployes; i++)
+        {
+            if (code == employes[i][0])
+            {
+                cout << endl << "Bonjour, " << employes[i][1] << endl;
+                return employes[i][1];
+            }
+        }
+
+        // Si aucun employé trouvé
+        cout << "ERREUR: Numero d'employe invalide." << endl;
+    }
+}
+
 int main()
 {
     // -----------------------------------------
-    // Création de la liste des employés
+    // Création de la liste des employés (vector)
     // -----------------------------------------
     vector<Employe> employes =
     {
@@ -18,56 +66,33 @@ int main()
         Employe("005", "Caroline")
     };
 
-    string numero;
-
-    // index de l'employé trouvé
-    // -1 signifie qu'on n'a trouvé personne
-    int indexEmploye = -1;
-
-    // -----------------------------------------
-    // AUTHENTIFICATION
-    // -----------------------------------------
-    // On continue tant qu'on ne trouve pas
-    // un numéro valide
-    // -----------------------------------------
-
-    while (indexEmploye == -1)
+    // Tableau utilisé pour la fonction Login du prof
+    const string employesLogin[][2] =
     {
-        cout << "Veuillez vous identifier: ";
-        cin >> numero;
+        {"001", "Andrew"},
+        {"002", "Nabil"},
+        {"003", "Marc"},
+        {"004", "Jean-Gabriel"},
+        {"005", "Caroline"}
+    };
 
-        // On parcourt la liste des employés
-        for (int i = 0; i < employes.size(); i++)
-        {
-            // Utilisation de l'opérateur ==
-            if (employes[i] == numero)
-            {
-                indexEmploye = i;
-                break;
-            }
-        }
+    int nombreEmployes = 5;
 
-        // Si aucun employé trouvé
-        if (indexEmploye == -1)
-        {
-            cout << "ERREUR: Numero d'employe invalide" << endl;
-        }
-    }
-
-    // Message de bienvenue
-    cout << "Bonjour, " << employes[indexEmploye].getNom() << endl;
+    // -----------------------------------------
+    // AUTHENTIFICATION (avec la fonction du prof)
+    // -----------------------------------------
+    string nomEmploye = Login(employesLogin, nombreEmployes);
 
     int choix;
 
     // -----------------------------------------
     // MENU PRINCIPAL
     // -----------------------------------------
-
     do
     {
         cout << endl;
         cout << "********************" << endl;
-        cout << " MENU PRINCIPAL " << endl;
+        cout << "     MENU PRINCIPAL " << endl;
         cout << "********************" << endl;
 
         cout << "1. Ajouter un article" << endl;
@@ -75,8 +100,8 @@ int main()
         cout << "3. Afficher le panier" << endl;
         cout << "0. Payer" << endl;
 
-        cout << "Votre choix: ";
-        cin >> choix;
+        // Utilisation de LireSaisie pour éviter les erreurs de saisie
+        choix = stoi(LireSaisie("Votre choix: "));
 
         switch (choix)
         {

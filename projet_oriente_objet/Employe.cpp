@@ -1,4 +1,5 @@
 #include "Employe.h"
+#include<string>
 
 // Constructeur
 // this sert à différencier l'attribut de la classe et le paramètre

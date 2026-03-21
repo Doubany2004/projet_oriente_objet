@@ -22,10 +22,12 @@
     <ClCompile Include="Article.cpp" />
     <ClCompile Include="Employe.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Panier.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Article.h" />
     <ClInclude Include="Employe.h" />
+    <ClInclude Include="Panier.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\.gitignore" />

@@ -17,6 +17,6 @@ public:
 	friend std::ostream& operator<<(std::ostream& os, const Article& articleAutre);
 
 	// declaration de la fonction de surcharge pour la comparaison
-	 bool operator==(const Article& articleAutre) const;
+	 bool operator==(const std::string& saisiCode) const;
 };
 

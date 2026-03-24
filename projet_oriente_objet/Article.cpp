@@ -23,3 +23,7 @@ std::ostream& operator<<(std::ostream& os, const Article& articleAutre) {
 bool Article::operator==(const string& saisiCode) const{
 	return code == saisiCode;
 }
+
+double Article::getPrix()const {
+	return this->prix;
+}

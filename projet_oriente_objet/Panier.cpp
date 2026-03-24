@@ -23,3 +23,15 @@ bool Panier::panierVide()const {
 	return items.empty();
 }
 
+std::vector<Article>::iterator Panier::panierBegin() {
+	return items.begin();
+}
+
+std::vector<Article>::iterator Panier::panierEnd() {
+	return items.end();
+}
+// declaration de la fonction pour retirerPanier
+
+void Panier::retirerPanier(std::vector<Article>::iterator article) {
+	items.erase(article);
+}

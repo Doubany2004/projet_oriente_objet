@@ -2,6 +2,9 @@
 #include <vector>
 #include <limits>
 #include <string>
+#include <cstdlib>
+#include <ctime>
+#include <iomanip>
 #include "Employe.h"
 #include "Article.h"
 #include "Panier.h"
@@ -43,6 +46,13 @@ void menuPrincipal() {
 
 }
 int main() {
+
+    srand(time(0));
+    time_t tempsBrut = time(0);
+    tm* date = localtime(&tempsBrut);
+    int randomNom = rand() % 2;
+    double sousTotal = 0.00;
+    double total = 0.00;
     // creation des objet
     Panier panierObjet;
    
@@ -115,7 +125,7 @@ int main() {
                 // appel de la fonction saisie code
                 string saisiCode = LireSaisie("votre choix...");
                 for (const Article& produitReference : produits) {
-                    if (produitReference == saisiCode) {
+                    if (produitReference ==saisiCode) {
                         panierObjet.ajoutPanier(produitReference);
                         ajoutArticle = true;
                         break;
@@ -137,7 +147,34 @@ int main() {
             break;
         }
         case 2:
-            cout << "RETIRER ARTICLE" << endl;
+            bool retirerFlag = false;
+            //afficher le panier
+            cout << endl;
+            cout << "*********************" << endl;
+            cout << "   RETIRER ARTICLE   " << endl;
+            cout << "*********************" << endl << endl;
+            if (panierObjet.panierVide()) {
+                cout << "votre Panier est vide" << endl;
+            }
+            else {
+                cout << panierObjet << endl;
+                while (!retirerFlag) {
+                    string saisiCode = LireSaisie("votre choix...");
+                    for (auto it = panierObjet.panierBegin(); it != panierObjet.panierEnd(); ++it) {
+                        if (*it == saisiCode) {
+                            panierObjet.retirerPanier(it);
+                            retirerFlag = true;
+                            break;
+                        }
+                    }
+                }
+                if (!retirerFlag) {
+                    cout << "choix incorect, veuillez ressayer" << endl;
+                }
+                else {
+                    cout << "Article supprimer" << endl;
+                }
+            }
             break;
 
         case 3:
@@ -154,7 +191,42 @@ int main() {
             break;
 
         case 0:
-            cout << "Paiement..." << endl;
+           
+            cout << endl;
+            cout << "*********************" << endl;
+            cout << "**     FACTURE     **" << endl;
+            cout << "*********************" << endl << endl;
+            if (panierObjet.panierVide()) {
+                cout << "votre Panier est vide" << endl;
+                break;
+            }
+            else {
+                for (auto it = panierObjet.panierBegin(); it != panierObjet.panierEnd(); ++it) {
+                    sousTotal = it->getPrix() + sousTotal;
+                    cout << *it << endl;
+                }
+                if (randomNom == 0) {
+                    double rabais = sousTotal * 0.25;
+                    cout << "rabais mystere: " << rabais << "$" << endl;
+                    total = sousTotal - rabais;
+                }
+                cout << "---------------------------" << endl;
+                cout << "sous-total :  " << sousTotal << endl;
+                cout << "TPS:  " << (total * 1.05) << endl;
+                cout << "TVQ" << (total * 1.09975) << endl;
+                total = total * 1.05 * 1.09975;
+                cout << "TOTAL: " << total << endl;
+                cout << "******************************" << endl;
+                cout << "vous avez ete servi par:" << nomEmploye << endl;
+                cout << "Date: " << (1900 + date->tm_year) << "-"
+                    << right << setw(2) << setfill('0') << (1 + date->tm_mon) << "-"
+                    << setw(2) << setfill('0') << date->tm_mday << endl;
+                cout << "Heure: " << date->tm_hour << ":"
+                    << setw(2) << setfill('0') << date->tm_min << ":"
+                    << setw(2) << setfill('0') << date->tm_sec << endl;
+                cout << "***************************" << endl;
+
+            }
             break;
 
         default:

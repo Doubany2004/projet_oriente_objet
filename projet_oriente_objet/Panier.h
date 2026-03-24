@@ -19,5 +19,8 @@ public:
 	// declaration de la fonction pour comparer la quantite d'article dans le panier
 	bool panierVide()const;
 
+	std::vector<Article>::iterator panierBegin();
+	std::vector<Article>::iterator panierEnd();
+	void retirerPanier(std::vector<Article>::iterator article);
 };
 

@@ -18,5 +18,7 @@ public:
 
 	// declaration de la fonction de surcharge pour la comparaison
 	 bool operator==(const std::string& saisiCode) const;
+
+	 double getPrix()const;
 };
 
